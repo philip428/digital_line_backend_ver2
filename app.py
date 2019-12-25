@@ -21,4 +21,6 @@ def create_tables():
 
 
 import resources.clerks_resources
+import resources.lines_resources
+import resources.clients_resources
 import resources.test
