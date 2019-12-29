@@ -15,11 +15,14 @@ class LineModel(db.Model):
     place_for_next_client = db.Column(db.Integer(), nullable=False)
     people_in_line = db.Column(db.Integer(), nullable=False)
 
+    next_to_call = db.Column(db.Integer())
+
     def __init__(self, name):
         self.name = name
         self.created_at = datetime.utcnow()
         self.place_for_next_client = 1
         self.people_in_line = 0
+        self.next_to_call = 1
 
     def assign_clerk(self, clerk):
         self.clerks.append(clerk)
@@ -33,6 +36,19 @@ class LineModel(db.Model):
         self.people_in_line += 1
         self.place_for_next_client += 1
         db.session.commit()
+
+    def check_clerk_authority(self, clerk):
+        """ Cheks if clerk is authorized to make changes to line """
+        return clerk in self.clerks
+
+    def call_next(self):
+        from models import ClientLineLinkModel
+        next_client = ClientLineLinkModel.get_client_by_place_in_line(self, self.next_to_call)
+        self.people_in_line -= 1
+        self.next_to_call += 1
+        db.session.commit()
+        return next_client
+
 
     @classmethod
     def check_if_line_exists(cls, name: str) -> bool:

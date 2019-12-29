@@ -17,3 +17,8 @@ class ClientLineLinkModel(db.Model):
         link = cls.query.filter_by(line_name=line.name, client_username=client.username).first()
         link.place_in_line = place
         db.session.commit()
+
+    @classmethod
+    def get_client_by_place_in_line(cls, line, place):
+        link = cls.query.filter_by(line_name=line.name, place_in_line=place).first()
+        return ClientModel.query.filter_by(username=link.client_username).first()

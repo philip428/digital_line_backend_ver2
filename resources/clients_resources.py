@@ -75,7 +75,7 @@ def clients_get_in_line():
         return {"msg": "Line '{}' was not found".format(line_name)}, 400
 
     if client in line.clients:
-        return {"msg": "Client '{}' is already in line '{}'"}, 409
+        return {"msg": "Client '{}' is already in line '{}'".format(client.username, line.name)}, 409
 
     line.add_client(client)
 

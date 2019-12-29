@@ -76,6 +76,40 @@ def clerks_create_line():
     new_line.assign_clerk(clerk)
     return {"msg": "Successfully created line '{}' and assigned it to clerk '{}'".format(new_line.name, clerk.username)}, 200
 
+@app.route('/clerks/call-next', methods=['POST'])
+@jwt_required
+def clerks_call_next():
+    # Check user authorization
+    current_user = get_jwt_identity()
+    if current_user.get('role') != "clerk":
+        return {"msg": "Only clerks can call next. Your role is {}".format(current_user.get('role'))}, 403
+
+    # Dealing with arguments
+    if not request.is_json:
+        return {"msg": "Missing JSON in request"}, 415
+
+    line_name = request.json.get("line_name", None)
+
+    if not line_name:
+        return {"msg": "Missing 'line_name' body parameter"}, 422
+
+    clerk = ClerkModel.get_by_username(username=current_user.get('username'))
+    line = LineModel.get_by_name(line_name)
+    if not line:
+        return {"msg": "Line with name '{}' does not exist".format(line_name)}, 404 #todo error code
+    
+    if not line.check_clerk_authority(clerk):
+        return {"msg": "Clerk '{}' is not authorized to perform actions on line '{}'".format(clerk.username, line.name)}, 403
+
+    if line.people_in_line == 0:
+        return {"msg": "Line '{}' is empty".format(line.name)}, 409
+
+    next_client = line.call_next()
+    print("Client '{}' it's your turn!".format(next_client.username))
+
+
+    return {"msg": "Client '{}' was called".format(next_client.username)}, 200
+
 
 @app.route('/clerks/protected', methods=['GET'])
 @jwt_required
