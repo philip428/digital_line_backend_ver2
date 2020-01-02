@@ -54,6 +54,7 @@ def clerks_register_and_login():
 @app.route('/clerks/create-line', methods=['POST'])
 @jwt_required
 def clerks_create_line():
+    """ body: {"line_name": "line_name"} """
     # Check user authorization
     current_user = get_jwt_identity()
     if current_user.get('role') != "clerk":
@@ -76,6 +77,7 @@ def clerks_create_line():
     new_line.assign_clerk(clerk)
     return {"msg": "Successfully created line '{}' and assigned it to clerk '{}'".format(new_line.name, clerk.username)}, 200
 
+
 @app.route('/clerks/call-next', methods=['POST'])
 @jwt_required
 def clerks_call_next():
@@ -96,8 +98,8 @@ def clerks_call_next():
     clerk = ClerkModel.get_by_username(username=current_user.get('username'))
     line = LineModel.get_by_name(line_name)
     if not line:
-        return {"msg": "Line with name '{}' does not exist".format(line_name)}, 404 #todo error code
-    
+        return {"msg": "Line with name '{}' does not exist".format(line_name)}, 404  # todo error code
+
     if not line.check_clerk_authority(clerk):
         return {"msg": "Clerk '{}' is not authorized to perform actions on line '{}'".format(clerk.username, line.name)}, 403
 
@@ -106,7 +108,6 @@ def clerks_call_next():
 
     next_client = line.call_next()
     print("Client '{}' it's your turn!".format(next_client.username))
-
 
     return {"msg": "Client '{}' was called".format(next_client.username)}, 200
 
