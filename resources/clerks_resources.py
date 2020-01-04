@@ -78,6 +78,26 @@ def clerks_create_line():
     return {"msg": "Successfully created line '{}' and assigned it to clerk '{}'".format(new_line.name, clerk.username)}, 200
 
 
+@app.route('/clerks/my-lines', methods=['GET'])
+@jwt_required
+def clerks_my_lines():
+    # Check user authorization
+    current_user = get_jwt_identity()
+    if current_user.get('role') != "clerk":
+        return {"msg": "Only clerks can call next. Your role is {}".format(current_user.get('role'))}, 403
+
+    clerk = ClerkModel.get_by_username(username=current_user.get('username'))
+    lines = clerk.my_lines()
+
+    class LineSchema(ma.ModelSchema):
+        class Meta:
+            model = LineModel
+
+    line_schema = LineSchema(many=True)
+
+    return jsonify(line_schema.dump(lines)), 200
+
+
 @app.route('/clerks/call-next', methods=['POST'])
 @jwt_required
 def clerks_call_next():

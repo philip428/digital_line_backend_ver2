@@ -6,7 +6,6 @@ from datetime import datetime
 class ClientModel(db.Model):
     __tablename__ = "clients"
 
-    #id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), primary_key=True, unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
@@ -16,12 +15,6 @@ class ClientModel(db.Model):
         self.username = username
         self.password = password
         self.created_at = datetime.utcnow()
-
-    # def get_in_line(self, line):
-    #     line.add_client(self)
-    #     # self.lines.append(line)
-    #     # db.session.add(self)
-    #     # db.session.commit()
 
     @classmethod
     def check_if_user_exists(cls, username: str) -> bool:

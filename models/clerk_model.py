@@ -1,4 +1,4 @@
-from app import db
+from app import db, ma
 from models.helpers import hash_password, verify_password_hash
 from datetime import datetime
 
@@ -38,28 +38,5 @@ class ClerkModel(db.Model):
     def get_by_username(cls, username: str) -> 'ClerkModel':
         return cls.query.filter_by(username=username).first()
 
-    ### TODO ###
-    # def my_lines()
-    #
-
-    # def save_to_db(self):
-    #     db.session.add(self)
-    #     db.session.commit()
-
-    # @classmethod
-    # def find_by_username(cls, username):
-    #     return cls.query.filter_by(username=username).first()
-
-    # def register(self):
-    #     if not self.find_by_username(self.username):
-    #         db.session.add(self)
-    #         db.session.commit()
-
-    # @classmethod
-    # def return_all(cls):
-    #     return cls.query.all()
-
-    # @classmethod
-    # def delete_all(cls):
-    #     cls.query.delete()
-    #     db.session.commit()
+    def my_lines(self):
+        return self.lines
