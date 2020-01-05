@@ -20,7 +20,7 @@ def create_tables():
     db.create_all()
 
 
-import resources.clerks_resources
-import resources.lines_resources
-import resources.clients_resources
-import resources.test
+import endpoints.clerks_endpoints
+import endpoints.lines_endpoints
+import endpoints.clients_endpoints
+import endpoints.test

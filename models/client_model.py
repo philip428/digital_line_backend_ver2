@@ -16,6 +16,9 @@ class ClientModel(db.Model):
         self.password = password
         self.created_at = datetime.utcnow()
 
+    def my_lines(self):
+        return self.lines
+
     @classmethod
     def check_if_user_exists(cls, username: str) -> bool:
         user = cls.query.filter_by(username=username).first()

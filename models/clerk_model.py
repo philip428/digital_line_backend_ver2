@@ -6,7 +6,6 @@ from datetime import datetime
 class ClerkModel(db.Model):
     __tablename__ = "clerks"
 
-    #id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), primary_key=True, unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)

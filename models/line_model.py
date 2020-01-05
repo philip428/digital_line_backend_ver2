@@ -5,7 +5,6 @@ from datetime import datetime
 class LineModel(db.Model):
     __tablename__ = "lines"
 
-    #id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), primary_key=True, unique=True, nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
 

@@ -4,8 +4,8 @@ from models import ClientModel, LineModel
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 
 
-@app.route('/clients/register-and-login', methods=['POST'])
-def clients_register_and_login():
+@app.route('/clients/authorize', methods=['POST'])
+def clients_authorize():
 
     # Dealing with arguments
     if not request.is_json:
@@ -80,6 +80,26 @@ def clients_get_in_line():
     line.add_client(client)
 
     return {"msg": "Successfully put client '{}' in line '{}'".format(client.username, line.name)}, 200
+
+
+@app.route('/clients/my-lines', methods=['GET'])
+@jwt_required
+def clients_my_lines():
+    # Check user authorization
+    current_user = get_jwt_identity()
+    if current_user.get('role') != "client":
+        return {"msg": "This endpoint is for clients. Your role is {}".format(current_user.get('role'))}, 403
+
+    client = ClientModel.get_by_username(username=current_user.get('username'))
+    lines = client.my_lines()
+
+    class LineSchema(ma.ModelSchema):
+        class Meta:
+            model = LineModel
+
+    line_schema = LineSchema(many=True)
+
+    return jsonify(line_schema.dump(lines)), 200
 
 
 @app.route('/clients/protected', methods=['GET'])

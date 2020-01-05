@@ -4,8 +4,8 @@ from models import ClerkModel, LineModel
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 
 
-@app.route('/clerks/register-and-login', methods=['POST'])
-def clerks_register_and_login():
+@app.route('/clerks/authorize', methods=['POST'])
+def clerks_authorize():
 
     # Dealing with arguments
     if not request.is_json:
@@ -84,7 +84,7 @@ def clerks_my_lines():
     # Check user authorization
     current_user = get_jwt_identity()
     if current_user.get('role') != "clerk":
-        return {"msg": "Only clerks can call next. Your role is {}".format(current_user.get('role'))}, 403
+        return {"msg": "This endpoint is for clerks. Your role is {}".format(current_user.get('role'))}, 403
 
     clerk = ClerkModel.get_by_username(username=current_user.get('username'))
     lines = clerk.my_lines()

@@ -26,7 +26,7 @@ print(load)
 
 def register_client(username):
     payload = {
-        "username": "yarik5",
+        "username": username,
         "password": "secret"
     }
 
@@ -37,11 +37,12 @@ def register_client(username):
     assert token is not None
     return token
 
+
 def get_in_line(token):
     headers = {'Authorization': 'Bearer ' + token}
 
     payload = {
-        "line_name": "tst line"
+        "line_name": "A"
     }
 
     r = requests.post("http://127.0.0.1:5000/clients/get-in-line", headers=headers, json=payload)
@@ -61,19 +62,18 @@ def call_next():
     print(load)
 
 
-
 def get_current_client():
     params = {"line_name": "tst line"}
     r = requests.get("http://127.0.0.1:5000/lines/get-current-client", params=params)
     load = r.json()
     print(load)
 
-clients = []#['yarik1', 'yarik2', 'yarik3']
+
+clients = ['yarik1', 'yarik2', 'yarik3']
 
 for c in clients:
     t = register_client(c)
     get_in_line(t)
-
 
 
 i = input()
