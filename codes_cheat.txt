@@ -1,4 +1,0 @@
-422 (Unprocessable Entity) Missing required parameters
-415 (Unsupported Media Type) Not json
-403 (Forbidden) Authorization problem
-409 (Conflict) Username already exists
