@@ -1,7 +1,10 @@
-from app import jwt, app, db, ma
+import time
+
 from flask import request, jsonify
-from models import ClerkModel, LineModel
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+
+from app import jwt, app, db, ma
+from models import ClerkModel, LineModel
 
 
 import logging
@@ -11,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 @app.route('/lines', methods=['GET'])
 def get_all_lines():
+    #time.sleep(3)
     lines = LineModel.query.all()
 
     class LineSchema(ma.ModelSchema):

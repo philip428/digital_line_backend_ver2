@@ -1,7 +1,10 @@
-from app import jwt, app, db, ma
+import time
+
 from flask import request, jsonify
-from models import ClerkModel, LineModel
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+
+from app import jwt, app, db, ma
+from models import ClerkModel, LineModel
 
 
 @app.route('/clerks/authorize', methods=['POST'])
@@ -142,6 +145,7 @@ def clerks_protected():
 
 @app.route('/clerks', methods=['GET'])
 def get_all_clerks():
+    #time.sleep(3)
     users = ClerkModel.query.all()
 
     class ClerkSchema(ma.ModelSchema):

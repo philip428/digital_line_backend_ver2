@@ -1,7 +1,10 @@
-from app import jwt, app, db, ma
+import time
+
 from flask import request, jsonify
-from models import ClientModel, LineModel
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+
+from app import jwt, app, db, ma
+from models import ClientModel, LineModel
 
 
 @app.route('/clients/authorize', methods=['POST'])
@@ -112,6 +115,7 @@ def clients_protected():
 
 @app.route('/clients', methods=['GET'])
 def get_all_clients():
+    #time.sleep(3)
     users = ClientModel.query.all()
 
     class ClienTschema(ma.ModelSchema):
