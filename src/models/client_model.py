@@ -1,6 +1,7 @@
+from datetime import datetime
+
 from app import db
 from models.helpers import hash_password, verify_password_hash
-from datetime import datetime
 
 
 class ClientModel(db.Model):

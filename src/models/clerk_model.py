@@ -1,6 +1,7 @@
+from datetime import datetime
+
 from app import db, ma
 from models.helpers import hash_password, verify_password_hash
-from datetime import datetime
 
 
 class ClerkModel(db.Model):
