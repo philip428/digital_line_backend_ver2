@@ -1,0 +1,7 @@
+README.md
+/.vscode
+/.git
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/__pycache__
