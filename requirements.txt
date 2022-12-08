@@ -1,6 +1,6 @@
 astroid==2.3.3
 autopep8==1.4.4
-certifi==2019.11.28
+certifi==2022.12.7
 Click==7.0
 Flask==1.1.1
 Flask-JWT-Extended==3.24.1
